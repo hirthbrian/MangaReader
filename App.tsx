@@ -1,21 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  View,
+  StatusBar,
+} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default function App() {
+import Loading from './src/screens/Loading';
+import Chapter from './src/screens/Chapter';
+import Chapters from './src/screens/Chapters';
+
+const Drawer = createDrawerNavigator();
+
+function App() {
+  useEffect(() => StatusBar.setBarStyle('dark-content'), []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator
+        drawerContent={(props) => <Chapters {...props} />}
+      >
+        <Drawer.Screen name="Loading" component={Loading} />
+        <Drawer.Screen name="Chapter" component={Chapter} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
