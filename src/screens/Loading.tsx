@@ -4,16 +4,22 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import Colors from '../colors';
+
 function Loading() {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.white,
       }}
     >
-      <ActivityIndicator />
+      <ActivityIndicator
+        size="large"
+        color={Colors.blue}
+      />
     </View>
   );
 }
