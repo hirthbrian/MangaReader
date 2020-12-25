@@ -10,7 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from './src/screens/Loading';
 import Chapter from './src/screens/Chapter';
 import { sectionBySaga } from './src/utils';
-import Colors from './src/colors';
 
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getChapters';
 

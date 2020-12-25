@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   Pressable,
+  StyleSheet,
   SafeAreaView,
 } from 'react-native';
 
@@ -67,79 +68,33 @@ function Chapter({
     <Pressable
       onPress={() => setShowChapters(true)}
     >
-      <Animatable.View
-        ref={footerRef}
-      >
-        <SafeAreaView
-          style={{
-            left: 0,
-            right: 0,
-            bottom: 0,
-            position: 'absolute',
-            backgroundColor: Colors.darkBlue,
-            borderTopRightRadius: 10,
-            borderTopLeftRadius: 10,
-
-
-
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 6,
-            },
-            shadowOpacity: 0.37,
-            shadowRadius: 7.49,
-          }}
-        >
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              paddingVertical: 10,
-              paddingHorizontal: 15,
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                paddingRight: 15,
-              }}
-            >
+      <Animatable.View ref={footerRef}>
+        <SafeAreaView style={styles.footerSafeAreaContainer}>
+          <View style={styles.footerContainer}>
+            <View style={styles.footerInfoContainer}>
               <Text
                 numberOfLines={2}
-                style={{
-                  fontSize: 16,
-                  fontFamily: 'InterBlack',
-                  color: Colors.white,
-                }}
+                style={styles.footerChapterNumber}
               >
                 {pad(index.toString(), 3)}
               </Text>
               <Text
                 numberOfLines={1}
-                style={{
-                  fontFamily: 'InterSemiBold',
-                  color: Colors.white,
-                }}
+                style={styles.footerChapterTitle}
               >
                 {title}
               </Text>
             </View>
             <Image
               source={listImage}
-              style={{
-                tintColor: Colors.white,
-                width: 20,
-                height: 20,
-              }}
+              style={styles.footerListImage}
             />
           </View>
           <View
-            style={{
-              height: 3,
-              width: `${progress * 100}%`,
-              backgroundColor: Colors.white,
-            }}
+            style={[
+              styles.footerProgresBar,
+              { width: `${progress * 100}%` },
+            ]}
           />
         </SafeAreaView>
       </Animatable.View>
@@ -153,10 +108,7 @@ function Chapter({
       onBackdropPress={() => setShowChapters(false)}
       animationInTiming={500}
       animationOutTiming={500}
-      style={{
-        margin: 0,
-        marginTop: 100,
-      }}
+      style={styles.modalContainer}
     >
       <Chapters
         chapters={chapters}
@@ -172,19 +124,13 @@ function Chapter({
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={{ flex: 1 }}>
       {loading ?
         <Loading /> :
         <GallerySwiper
           images={images}
           pageMargin={20}
-          style={{
-            backgroundColor: 'white'
-          }}
+          style={{ backgroundColor: Colors.white }}
           onSingleTapConfirmed={() => setShowFooter(!showFooter)}
           onPageSelected={(index) => setProgress((index + 1) / images.length)}
         />
@@ -194,5 +140,56 @@ function Chapter({
     </View >
   );
 }
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    margin: 0,
+    marginTop: 100,
+  },
+  footerSafeAreaContainer: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
+    backgroundColor: Colors.darkBlue,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+  },
+  footerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  footerInfoContainer: {
+    flex: 1,
+    paddingRight: 15,
+  },
+  footerChapterNumber: {
+    fontSize: 16,
+    fontFamily: 'InterBlack',
+    color: Colors.white,
+  },
+  footerChapterTitle: {
+    fontFamily: 'InterSemiBold',
+    color: Colors.white,
+  },
+  footerListImage: {
+    width: 20,
+    height: 20,
+    tintColor: Colors.white,
+  },
+  footerProgresBar: {
+    height: 3,
+    backgroundColor: Colors.white,
+  }
+});
 
 export default Chapter;
