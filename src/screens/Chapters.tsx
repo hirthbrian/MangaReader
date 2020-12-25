@@ -15,6 +15,7 @@ import { pad } from '../utils';
 import Colors from '../colors';
 
 const closeImage = require('../../assets/close.png');
+const ITEM_HEIGHT = 82;
 
 function Chapters({
   chapters,
@@ -94,10 +95,13 @@ function Chapters({
       <SectionList
         sections={chapters}
         renderItem={renderItem}
-        keyExtractor={item => item.title}
+        keyExtractor={item => item.index}
         showsVerticalScrollIndicator={false}
         renderSectionHeader={renderSectionHeader}
-      // initialScrollIndex={initialChapter - 1}
+        initialScrollIndex={initialChapter}
+        getItemLayout={(data, index) => (
+          { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
+        )}
       />
     </SafeAreaView>
   );
@@ -151,6 +155,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
   },
   sectionItemContainer: {
+    height: ITEM_HEIGHT,
     paddingVertical: 15,
     paddingHorizontal: 20,
   },
