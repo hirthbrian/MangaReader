@@ -7,8 +7,8 @@ import axios from 'axios';
 import { useFonts } from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Loading from './src/screens/Loading';
 import Chapter from './src/screens/Chapter';
+import Loading from './src/components/Loading';
 import { sectionBySaga } from './src/utils';
 
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getChapters';
