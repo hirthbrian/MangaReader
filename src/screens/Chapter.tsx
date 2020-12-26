@@ -80,7 +80,12 @@ function Chapter({
           pageMargin={20}
           style={{ backgroundColor: Colors.white }}
           onSingleTapConfirmed={() => setShowFooter(!showFooter)}
-          onPageSelected={(index) => setProgress(((index + 1) / images.length) * 100)}
+          onPageSelected={(index) => {
+            const percentage = ((index + 1) / images.length) * 100;
+            if (index) setShowFooter(false);
+            if (percentage === 100) setShowFooter(true);
+            setProgress(percentage);
+          }}
         />
       }
       <Footer
@@ -91,7 +96,10 @@ function Chapter({
         showChapters={setShowChapters}
         onChapterChanged={(index: number) => {
           setIndex(index);
-          setTitle(chapters[index].title);
+          chapters.map(section => section.data.map(chapter => {
+            if (chapter.index === index) setTitle(chapter.title)
+          }));
+          // setTitle(chapters[index].title);
         }}
       />
       {renderModal()}
