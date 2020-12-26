@@ -10,12 +10,14 @@ import {
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
 import { pad } from '../utils';
 import Colors from '../colors';
 
 const closeImage = require('../../assets/close.png');
 const ITEM_HEIGHT = 82;
+const HEADER_HEIGHT = 95;
 
 function Chapters({
   chapters,
@@ -84,7 +86,7 @@ function Chapters({
         <View style={styles.headerContainer}>
           <View style={{ width: 15 }} />
           <Text style={styles.headerTitle}>
-            Chapitre
+            Chapitres
           </Text>
           <Image
             source={closeImage}
@@ -95,13 +97,14 @@ function Chapters({
       <SectionList
         sections={chapters}
         renderItem={renderItem}
-        keyExtractor={item => item.index}
+        keyExtractor={item => item.title}
         showsVerticalScrollIndicator={false}
         renderSectionHeader={renderSectionHeader}
         initialScrollIndex={initialChapter}
-        getItemLayout={(data, index) => (
-          { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
-        )}
+        getItemLayout={sectionListGetItemLayout({
+          getItemHeight: () => ITEM_HEIGHT,
+          getSectionHeaderHeight: () => HEADER_HEIGHT,
+        })}
       />
     </SafeAreaView>
   );

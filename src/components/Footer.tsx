@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
+import { FlingGestureHandler, Directions, State } from 'react-native-gesture-handler';
 
 import Colors from '../colors';
 import { pad } from '../utils';
@@ -21,6 +22,7 @@ interface FooterProps {
   progress: number,
   isVisible: boolean,
   showChapters: Function,
+  onChapterChanged: Function,
 }
 
 function Footer({
@@ -29,6 +31,7 @@ function Footer({
   progress,
   isVisible,
   showChapters,
+  onChapterChanged,
 }: FooterProps) {
   const footerRef = useRef(null);
 
@@ -42,36 +45,55 @@ function Footer({
 
   return (
     <Pressable onPress={() => showChapters(true)}>
-      <Animatable.View ref={footerRef}>
-        <SafeAreaView style={styles.safeAreaContainer}>
-          <View style={styles.container}>
-            <View style={styles.infoContainer}>
-              <Text
-                numberOfLines={2}
-                style={styles.chapterNumber}
-              >
-                {pad(index.toString(), 3)}
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={styles.chapterTitle}
-              >
-                {title}
-              </Text>
-            </View>
-            <Image
-              source={listImage}
-              style={styles.listImage}
-            />
-          </View>
-          <View
-            style={[
-              styles.progresBar,
-              { width: `${progress}%` },
-            ]}
-          />
-        </SafeAreaView>
-      </Animatable.View>
+      <FlingGestureHandler
+        direction={Directions.LEFT}
+        onHandlerStateChange={({ nativeEvent }) => {
+          if (nativeEvent.state === State.ACTIVE) {
+            onChapterChanged(index + 1);
+          }
+        }}
+      >
+        <FlingGestureHandler
+          direction={Directions.RIGHT}
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.ACTIVE) {
+              onChapterChanged(index - 1);
+            }
+          }}
+        >
+
+          <Animatable.View ref={footerRef}>
+            <SafeAreaView style={styles.safeAreaContainer}>
+              <View style={styles.container}>
+                <View style={styles.infoContainer}>
+                  <Text
+                    numberOfLines={2}
+                    style={styles.chapterNumber}
+                  >
+                    {pad(index.toString(), 3)}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={styles.chapterTitle}
+                  >
+                    {title}
+                  </Text>
+                </View>
+                <Image
+                  source={listImage}
+                  style={styles.listImage}
+                />
+              </View>
+              <View
+                style={[
+                  styles.progresBar,
+                  { width: `${progress}%` },
+                ]}
+              />
+            </SafeAreaView>
+          </Animatable.View>
+        </FlingGestureHandler>
+      </FlingGestureHandler>
     </Pressable>
   );
 }

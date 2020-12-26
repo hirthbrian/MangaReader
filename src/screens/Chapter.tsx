@@ -89,6 +89,10 @@ function Chapter({
         progress={progress}
         isVisible={showFooter}
         showChapters={setShowChapters}
+        onChapterChanged={(index: number) => {
+          setIndex(index);
+          setTitle(chapters[index].title);
+        }}
       />
       {renderModal()}
     </View>
