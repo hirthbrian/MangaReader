@@ -38,8 +38,8 @@ function Footer({
   useEffect(() => {
     if (footerRef && footerRef.current) {
       isVisible ?
-        footerRef.current.fadeIn(500) :
-        footerRef.current.fadeOut(500);
+        footerRef.current.slideInUp() :
+        footerRef.current.slideOutDown();
     }
   }, [isVisible])
 
@@ -62,7 +62,10 @@ function Footer({
           }}
         >
 
-          <Animatable.View ref={footerRef}>
+          <Animatable.View
+            useNativeDriver
+            ref={footerRef}
+          >
             <SafeAreaView style={styles.safeAreaContainer}>
               <View style={styles.container}>
                 <View style={styles.infoContainer}>

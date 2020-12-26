@@ -78,7 +78,7 @@ function Chapter({
         <GallerySwiper
           images={images}
           pageMargin={20}
-          style={{ backgroundColor: Colors.white }}
+          // style={{ backgroundColor: Colors.white }}
           onSingleTapConfirmed={() => setShowFooter(!showFooter)}
           onPageSelected={(index) => {
             const percentage = ((index + 1) / images.length) * 100;
