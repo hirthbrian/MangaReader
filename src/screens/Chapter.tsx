@@ -78,7 +78,6 @@ function Chapter({
         <GallerySwiper
           images={images}
           pageMargin={20}
-          // style={{ backgroundColor: Colors.white }}
           onSingleTapConfirmed={() => setShowFooter(!showFooter)}
           onPageSelected={(index) => {
             const percentage = ((index + 1) / images.length) * 100;
@@ -99,7 +98,6 @@ function Chapter({
           chapters.map(section => section.data.map(chapter => {
             if (chapter.index === index) setTitle(chapter.title)
           }));
-          // setTitle(chapters[index].title);
         }}
       />
       {renderModal()}
