@@ -122,7 +122,7 @@ function Chapter({
         showChapters={setShowChapters}
         onChapterChanged={(index: number) => {
           setIndex(index);
-          setTitle(chapters[index].title);
+          setTitle(chapters[index - 1].title);
         }}
       />
       {renderModal()}
