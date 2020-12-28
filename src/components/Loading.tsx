@@ -12,7 +12,7 @@ function Loading() {
     <View style={styles.container}>
       <ActivityIndicator
         size="large"
-        color={Colors.blue}
+        color={Colors.white}
       />
     </View>
   );

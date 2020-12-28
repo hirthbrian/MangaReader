@@ -9,10 +9,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
-import { pad } from '../utils';
+import { pad, sectionBySaga } from '../utils';
 import Colors from '../colors';
 
 const closeImage = require('../../assets/close.png');
@@ -26,10 +25,6 @@ function Chapters({
   onCloseModal,
 }) {
   const [chapterSelected, setChapterSelected] = useState(initialChapter);
-
-  useEffect(() => {
-    AsyncStorage.setItem('@chapter', chapterSelected.toString());
-  }, [chapterSelected])
 
   const selectChapter = (index: number, title: string) => {
     setChapterSelected(index);
@@ -95,7 +90,7 @@ function Chapters({
         </View>
       </Pressable>
       <SectionList
-        sections={chapters}
+        sections={sectionBySaga(chapters)}
         renderItem={renderItem}
         keyExtractor={item => item.title}
         showsVerticalScrollIndicator={false}

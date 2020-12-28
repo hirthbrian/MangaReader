@@ -19,7 +19,6 @@ const listImage = require('../../assets/list.png');
 interface FooterProps {
   index: number,
   title: string,
-  progress: number,
   isVisible: boolean,
   showChapters: Function,
   onChapterChanged: Function,
@@ -28,7 +27,6 @@ interface FooterProps {
 function Footer({
   index,
   title,
-  progress,
   isVisible,
   showChapters,
   onChapterChanged,
@@ -36,37 +34,51 @@ function Footer({
   const footerRef = useRef(null);
 
   useEffect(() => {
-    if (footerRef && footerRef.current) {
-      isVisible ?
-        footerRef.current.slideInUp() :
-        footerRef.current.slideOutDown();
-    }
+    isVisible ?
+      footerRef?.current?.transitionTo({ translateY: 0 }) :
+      footerRef?.current?.transitionTo({ translateY: 100 });
   }, [isVisible])
 
+  const pressInAnimation = () => {
+    footerRef?.current?.transitionTo({ scale: 1.03 });
+  }
+
+  const pressOutAnimation = () => {
+    footerRef?.current?.transitionTo({ scale: 1 });
+  }
+
+  const onFlingLeft = ({ nativeEvent }) => {
+    if (nativeEvent.state === State.ACTIVE) {
+      onChapterChanged(index + 1);
+    }
+  };
+
+  const onFlingRight = ({ nativeEvent }) => {
+    if (nativeEvent.state === State.ACTIVE) {
+      onChapterChanged(index - 1);
+    }
+  };
+
   return (
-    <Pressable onPress={() => showChapters(true)}>
+    <Pressable
+      onPress={() => showChapters(true)}
+      onPressIn={pressInAnimation}
+      onPressOut={pressOutAnimation}
+    >
       <FlingGestureHandler
         direction={Directions.LEFT}
-        onHandlerStateChange={({ nativeEvent }) => {
-          if (nativeEvent.state === State.ACTIVE) {
-            onChapterChanged(index + 1);
-          }
-        }}
+        onHandlerStateChange={onFlingLeft}
       >
         <FlingGestureHandler
           direction={Directions.RIGHT}
-          onHandlerStateChange={({ nativeEvent }) => {
-            if (nativeEvent.state === State.ACTIVE) {
-              onChapterChanged(index - 1);
-            }
-          }}
+          onHandlerStateChange={onFlingRight}
         >
-
-          <Animatable.View
-            useNativeDriver
-            ref={footerRef}
-          >
-            <SafeAreaView style={styles.safeAreaContainer}>
+          <SafeAreaView>
+            <Animatable.View
+              useNativeDriver
+              ref={footerRef}
+              style={styles.animatedContainer}
+            >
               <View style={styles.container}>
                 <View style={styles.infoContainer}>
                   <Text
@@ -87,14 +99,8 @@ function Footer({
                   style={styles.listImage}
                 />
               </View>
-              <View
-                style={[
-                  styles.progresBar,
-                  { width: `${progress}%` },
-                ]}
-              />
-            </SafeAreaView>
-          </Animatable.View>
+            </Animatable.View>
+          </SafeAreaView>
         </FlingGestureHandler>
       </FlingGestureHandler>
     </Pressable>
@@ -102,15 +108,15 @@ function Footer({
 }
 
 const styles = StyleSheet.create({
-  safeAreaContainer: {
+  animatedContainer: {
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 10,
     position: 'absolute',
-    backgroundColor: Colors.darkBlue,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderRadius: 10,
+    marginHorizontal: 10,
     shadowColor: Colors.black,
+    backgroundColor: Colors.darkBlue,
     shadowOffset: {
       width: 0,
       height: 6,

@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Chapter from './src/screens/Chapter';
 import Loading from './src/components/Loading';
-import { sectionBySaga } from './src/utils';
 
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getChapters';
 
@@ -29,7 +28,8 @@ function App() {
     StatusBar.setBarStyle('light-content');
     axios(URL).then(async response => {
       const value = await AsyncStorage.getItem('@chapter') || 1;
-      setChapters(sectionBySaga(response.data));
+      setChapters(response.data);
+      // setChapters(sectionBySaga(response.data));
       setInitialIndex(Number(value));
       setInitialTitle(response.data[Number(value) - 1].title);
     });
