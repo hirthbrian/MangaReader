@@ -33,8 +33,8 @@ function Progress({
 
 const styles = StyleSheet.create({
   progressBar: {
-    height: 3,
-    backgroundColor: Colors.white,
+    height: 2,
+    backgroundColor: Colors.whiteHalf,
   },
 });
 

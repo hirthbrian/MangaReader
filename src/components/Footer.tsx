@@ -36,7 +36,7 @@ function Footer({
   useEffect(() => {
     isVisible ?
       footerRef?.current?.transitionTo({ translateY: 0 }) :
-      footerRef?.current?.transitionTo({ translateY: 100 });
+      footerRef?.current?.transitionTo({ translateY: 120 });
   }, [isVisible])
 
   const pressInAnimation = () => {
