@@ -10,7 +10,6 @@ import Colors from '../colors';
 
 interface ProgressProps {
   progress: number,
-
 };
 
 function Progress({
@@ -34,10 +33,8 @@ function Progress({
 
 const styles = StyleSheet.create({
   progressBar: {
-    height: 6,
+    height: 3,
     backgroundColor: Colors.white,
-    borderTopRightRadius: 3,
-    borderBottomRightRadius: 3,
   },
 });
 

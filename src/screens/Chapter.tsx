@@ -1,10 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  View,
-  Image,
   StyleSheet,
   Dimensions,
-  Pressable,
   SafeAreaView,
 } from 'react-native';
 
@@ -17,6 +14,7 @@ import Colors from '../colors';
 import Chapters from './Chapters';
 import Loading from '../components/Loading';
 import Progress from '../components/Progress';
+import Page from '../components/Page';
 import Footer from '../components/Footer';
 
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getPages';
@@ -38,7 +36,7 @@ function Chapter({
   initialTitle,
   chapters,
 }: ChapterProps) {
-  const { width, height } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
   const [index, setIndex] = useState(initialIndex);
   const [title, setTitle] = useState(initialTitle);
   const [images, setImages] = useState([]);
@@ -86,19 +84,10 @@ function Chapter({
           items={images}
           data={images}
           renderItem={({ item: { uri } }) => (
-            <Pressable
+            <Page
+              uri={uri}
               onPress={() => setShowFooter(!showFooter)}
-              style={{ flex: 1 }}
-            >
-              <Image
-                source={{ uri }}
-                resizeMode='contain'
-                style={{
-                  height,
-                  width,
-                }}
-              />
-            </Pressable>
+            />
           )}
           onSnapToItem={(index: number) => {
             const percentage = (index + 1) / images.length;
@@ -108,8 +97,8 @@ function Chapter({
           }}
           inactiveSlideOpacity={1}
           inactiveSlideScale={1}
-          itemWidth={Dimensions.get('window').width + 10}
-          sliderWidth={Dimensions.get('window').width}
+          itemWidth={width + 10}
+          sliderWidth={width}
         />
       }
       <Progress

@@ -5,6 +5,7 @@ import {
 
 import axios from 'axios';
 import { useFonts } from 'expo-font';
+import { useKeepAwake } from 'expo-keep-awake';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Chapter from './src/screens/Chapter';
@@ -13,6 +14,7 @@ import Loading from './src/components/Loading';
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getChapters';
 
 function App() {
+  useKeepAwake();
   const [chapters, setChapters] = useState([]);
   const [initialIndex, setInitialIndex] = useState(0);
   const [initialTitle, setInitialTitle] = useState('');
