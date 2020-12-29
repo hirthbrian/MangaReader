@@ -43,7 +43,7 @@ function Chapter({
   const [showChapters, setShowChapters] = useState(false);
   const [showFooter, setShowFooter] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(1);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     setLoading(true);
