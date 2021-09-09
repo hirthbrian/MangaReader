@@ -1,42 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 import Modal from 'react-native-modal';
 import axios from 'axios';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Colors from '../colors';
-import Chapters from './Chapters';
-import Loading from '../components/Loading';
-import Progress from '../components/Progress';
-import Page from '../components/Page';
-import Footer from '../components/Footer';
+import Colors from '../../colors';
+import Chapters from '../Chapters';
+import Loading from '../../components/Loading';
+import Progress from '../../components/Progress';
+import Page from '../../components/Page';
+import Footer from '../../components/Footer';
 
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getPages';
 
-interface Chapter {
-  index: number,
-  title: string,
-  url: string,
-};
-
-interface ChapterProps {
-  initialIndex: number,
-  initialTitle: string,
-  chapters: Chapter[],
-};
+import { Props } from './types';
+import { styles, Container } from './styles';
 
 function Chapter({
   initialIndex,
   initialTitle,
   chapters,
-}: ChapterProps) {
-  const { width } = Dimensions.get('window');
+}: Props) {
+  const { width } = useWindowDimensions();
   const [index, setIndex] = useState(initialIndex);
   const [title, setTitle] = useState(initialTitle);
   const [images, setImages] = useState([]);
@@ -76,19 +63,21 @@ function Chapter({
     </Modal>
   );
 
+  const renderPage = ({ item: { uri } }) => (
+    <Page
+      uri={uri}
+      onPress={() => setShowFooter(!showFooter)}
+    />
+  )
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.black }}>
+    <Container>
       {loading ?
         <Loading /> :
         <Carousel
           items={images}
           data={images}
-          renderItem={({ item: { uri } }) => (
-            <Page
-              uri={uri}
-              onPress={() => setShowFooter(!showFooter)}
-            />
-          )}
+          renderItem={renderPage}
           onSnapToItem={(index: number) => {
             const percentage = (index + 1) / images.length;
             if (index) setShowFooter(false);
@@ -101,9 +90,7 @@ function Chapter({
           sliderWidth={width}
         />
       }
-      <Progress
-        progress={progress}
-      />
+      <Progress progress={progress} />
       <Footer
         index={index}
         title={title}
@@ -115,16 +102,8 @@ function Chapter({
         }}
       />
       {renderModal()}
-    </SafeAreaView>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 0,
-    marginTop: 100,
-    marginHorizontal: 5,
-  }
-});
 
 export default Chapter;
