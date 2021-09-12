@@ -17,32 +17,62 @@ function Page({ uri, onPress }: Props) {
   const panRef = useRef(null);
   const pinchRef = useRef(null);
   const scale = useRef(new Animated.Value(1)).current;
-  const translate = useRef(new Animated.ValueXY()).current;
-
-  const onPinchEvent = Animated.event(
-    [{ nativeEvent: { scale } }],
-    { useNativeDriver: true }
-  );
+  const focalX = useRef(new Animated.Value(width / 2)).current;
+  const focalY = useRef(new Animated.Value(height / 2)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
   const onPanGestureEvent = Animated.event([{
     nativeEvent: {
-      translationX: translate.x,
-      translationY: translate.y,
+      translationX: translateX,
+      translationY: translateY,
     }
   }], { useNativeDriver: true });
 
+  const onPinchEvent = Animated.event(
+    [{ nativeEvent: { scale, focalX, focalY } }],
+    { useNativeDriver: true }
+  );
+
   const onPanStateChange = (event: HandlerStateChangeEvent<PanGestureHandlerEventPayload>) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
-      Animated.spring(translate.x, { toValue: 0, useNativeDriver: true }).start();
-      Animated.spring(translate.y, { toValue: 0, useNativeDriver: true }).start();
+      Animated.spring(translateX, { toValue: 0, useNativeDriver: true }).start();
+      Animated.spring(translateY, { toValue: 0, useNativeDriver: true }).start();
     }
   };
 
   const onPinchStateChange = (event: HandlerStateChangeEvent<PinchGestureHandlerEventPayload>) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
-      Animated.spring(scale, { toValue: 1, useNativeDriver: true }).start()
+      Animated.spring(scale, { toValue: 1, useNativeDriver: true }).start();
+      Animated.spring(focalX, { toValue: width / 2, useNativeDriver: true }).start();
+      Animated.spring(focalY, { toValue: height / 2, useNativeDriver: true }).start();
     }
   };
+
+  const negativeInterpolation = (animatedValue: Animated.Value) =>
+    animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, -1],
+    });
+
+  const transformValues = () => [
+    { translateX },
+    { translateY },
+    { translateX: focalX },
+    { translateY: focalY },
+    { translateX: -width / 2 },
+    { translateY: -height / 2 },
+    {
+      scale: scale.interpolate({
+        inputRange: [0, 1, 3, 10],
+        outputRange: [0.8, 1, 3, 3]
+      })
+    },
+    { translateX: negativeInterpolation(focalX) },
+    { translateY: negativeInterpolation(focalY) },
+    { translateX: width / 2 },
+    { translateY: height / 2 },
+  ]
 
   return (
     <Container
@@ -50,19 +80,19 @@ function Page({ uri, onPress }: Props) {
       height={height}
     >
       <Pressable onPress={onPress}>
-        <PinchGestureHandler
-          ref={pinchRef}
-          simultaneousHandlers={panRef}
-          onGestureEvent={onPinchEvent}
-          onHandlerStateChange={onPinchStateChange}
+        <PanGestureHandler
+          ref={panRef}
+          simultaneousHandlers={pinchRef}
+          minPointers={2}
+          onGestureEvent={onPanGestureEvent}
+          onHandlerStateChange={onPanStateChange}
         >
           <Animated.View>
-            <PanGestureHandler
-              ref={panRef}
-              simultaneousHandlers={pinchRef}
-              minPointers={2}
-              onGestureEvent={onPanGestureEvent}
-              onHandlerStateChange={onPanStateChange}
+            <PinchGestureHandler
+              ref={pinchRef}
+              simultaneousHandlers={panRef}
+              onGestureEvent={onPinchEvent}
+              onHandlerStateChange={onPinchStateChange}
             >
               <Animated.Image
                 source={{ uri }}
@@ -70,21 +100,12 @@ function Page({ uri, onPress }: Props) {
                 style={{
                   width,
                   height,
-                  transform: [
-                    {
-                      scale: scale.interpolate({
-                        inputRange: [0, 1, 3, 100],
-                        outputRange: [0.5, 1, 3, 10]
-                      })
-                    },
-                    { translateX: translate.x },
-                    { translateY: translate.y },
-                  ]
+                  transform: transformValues(),
                 }}
               />
-            </PanGestureHandler>
+            </PinchGestureHandler>
           </Animated.View>
-        </PinchGestureHandler>
+        </PanGestureHandler>
       </Pressable>
     </Container>
   );

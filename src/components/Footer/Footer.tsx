@@ -1,10 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-} from 'react-native';
+import { View, Pressable } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
 import {
   State,
   Directions,
@@ -12,6 +8,8 @@ import {
   HandlerStateChangeEvent,
   FlingGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Animatable from 'react-native-animatable';
 
 import { pad } from '../../utils';
 import styles, {
@@ -32,7 +30,8 @@ function Footer({
   showChapters,
   onChapterChanged,
 }: FooterProps) {
-  const footerRef = useRef(null);
+  const insets = useSafeAreaInsets();
+  const footerRef = useRef<Animatable.View & View>(null);
 
   useEffect(() => {
     isVisible ?
@@ -68,27 +67,25 @@ function Footer({
           direction={Directions.RIGHT}
           onHandlerStateChange={(e) => onFling(e, Directions.RIGHT)}
         >
-          <SafeAreaView>
-            <Animatable.View
-              useNativeDriver
-              ref={footerRef}
-              style={styles.animatedContainer}
-            >
-              <Container>
-                <InfoContainer>
-                  <ChapterNumber numberOfLines={2}>
-                    {pad(index.toString(), 3)}
-                  </ChapterNumber>
-                  <ChapterTitle numberOfLines={1}>
-                    {title}
-                  </ChapterTitle>
-                </InfoContainer>
-                <ListImage
-                  source={listImage}
-                />
-              </Container>
-            </Animatable.View>
-          </SafeAreaView>
+          <Animatable.View
+            useNativeDriver
+            ref={footerRef}
+            style={[styles.animatedContainer, {
+              bottom: insets.bottom + 10,
+            }]}
+          >
+            <Container>
+              <ListImage source={listImage} />
+              <InfoContainer>
+                <ChapterNumber numberOfLines={2}>
+                  {pad(index.toString(), 3)}
+                </ChapterNumber>
+                <ChapterTitle numberOfLines={1}>
+                  {title}
+                </ChapterTitle>
+              </InfoContainer>
+            </Container>
+          </Animatable.View>
         </FlingGestureHandler>
       </FlingGestureHandler>
     </Pressable>

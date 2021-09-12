@@ -26,7 +26,7 @@ export const sectionBySaga = (chapters) => [{
   data: chapters.slice(655, 802),
 }, {
   title: 'Four Emperors',
-  data: chapters.slice(803, chapters.lenght),
+  data: chapters.slice(803, chapters.length),
 }];
 
 export const getContrastYIQ = (hexcolor: string) => {

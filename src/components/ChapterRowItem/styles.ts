@@ -2,32 +2,33 @@ import styled from 'styled-components/native';
 
 import Colors from '../../colors';
 
-const ITEM_HEIGHT = 82;
+const ITEM_HEIGHT = 66.5;
 
 export const Container = styled.View`
   background-color: ${props => props.pressed ? Colors.blue : Colors.darkBlue};
 `;
 
-export const SectionItemNumber = styled.Text`
-  font-size: 20px;
+export const ItemNumber = styled.Text`
+  flex: 1;
+  font-size: 18px;
   padding-bottom: 5px;
   font-family: InterBlack;
   color: ${props => props.isChapterSelected ? Colors.green : Colors.white};
 `;
 
-export const SectionItemTitle = styled.Text`
+export const ItemTitle = styled.Text`
   flex: 1;
-  font-size: 18px;
+  font-size: 16px;
   font-family: InterSemiBold;
   color: ${props => props.isChapterSelected ? Colors.green : Colors.white};
 `;
 
-export const SectionItemContainer = styled.View`
+export const ItemContainer = styled.View`
   height: ${ITEM_HEIGHT}px;
-  padding: 15px 20px;
+  padding: 10px 10px;
 `;
 
-export const SectionItemSelected = styled.View`
+export const ItemSelected = styled.View`
   height: 100%;
   position: absolute;
   width: 5px;

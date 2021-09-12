@@ -65,6 +65,19 @@ function Chapter({
     />
   )
 
+  const renderFooter = () => (
+    <Footer
+      index={index}
+      title={title}
+      isVisible={showFooter}
+      showChapters={setShowChapters}
+      onChapterChanged={(index: number) => {
+        setIndex(index);
+        setTitle(chapters[index - 1].title);
+      }}
+    />
+  )
+
   const onMomentum = ({
     nativeEvent: {
       contentSize,
@@ -94,16 +107,7 @@ function Chapter({
         />
       }
       <Progress progress={progress} />
-      <Footer
-        index={index}
-        title={title}
-        isVisible={showFooter}
-        showChapters={setShowChapters}
-        onChapterChanged={(index: number) => {
-          setIndex(index);
-          setTitle(chapters[index - 1].title);
-        }}
-      />
+      {renderFooter()}
       {renderChapterList()}
     </Container>
   );

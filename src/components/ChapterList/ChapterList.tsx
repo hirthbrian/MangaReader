@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Pressable,
-  SectionList,
-} from 'react-native';
+import { SectionList } from 'react-native';
 import Modal from 'react-native-modal';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
@@ -12,18 +8,13 @@ import { Props } from './types';
 import ChapterRowItem from '../ChapterRowItem';
 
 import styles, {
-  CloseImage,
-  HeaderTitle,
-  HeaderContainer,
   SafeAreaContainer,
-  SectionHeaderLine,
   SectionHeaderTitle,
   SectionHeaderContainer,
 } from './styles';
 
-const closeImage = require('../../../assets/close.png');
-const ITEM_HEIGHT = 82;
-const HEADER_HEIGHT = 95;
+const ITEM_HEIGHT = 66.5;
+const HEADER_HEIGHT = 71;
 
 function ChapterList({
   chapters,
@@ -53,7 +44,6 @@ function ChapterList({
       <SectionHeaderTitle>
         {title}
       </SectionHeaderTitle>
-      <SectionHeaderLine />
     </SectionHeaderContainer>
   );
 
@@ -61,22 +51,13 @@ function ChapterList({
     <Modal
       useNativeDriver
       isVisible={isVisible}
+      animationIn='slideInLeft'
+      animationOut='slideOutLeft'
       onBackdropPress={onClose}
       style={styles.modalContainer}
       hideModalContentWhileAnimating
     >
       <SafeAreaContainer>
-        <Pressable onPress={onClose}>
-          <HeaderContainer>
-            <View style={{ width: 15 }} />
-            <HeaderTitle>
-              Chapitres
-            </HeaderTitle>
-            <CloseImage
-              source={closeImage}
-            />
-          </HeaderContainer>
-        </Pressable>
         <SectionList
           sections={sectionBySaga(chapters)}
           renderItem={renderItem}

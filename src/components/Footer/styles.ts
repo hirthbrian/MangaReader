@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
 import Colors from '../../colors';
@@ -11,7 +11,7 @@ export const Container = styled.View`
 
 export const InfoContainer = styled.View`
   flex: 1;
-  padding-right: 15px;
+  padding-left: 15px;
 `
 
 export const ChapterNumber = styled.Text`

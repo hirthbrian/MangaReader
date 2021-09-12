@@ -6,10 +6,10 @@ import { Props } from './types';
 
 import {
   Container,
-  SectionItemTitle,
-  SectionItemNumber,
-  SectionItemSelected,
-  SectionItemContainer,
+  ItemTitle,
+  ItemNumber,
+  ItemSelected,
+  ItemContainer,
 } from './styles';
 
 function ChapterRowItem({
@@ -22,21 +22,21 @@ function ChapterRowItem({
     <Pressable onPress={() => onPress(index, title)}>
       {({ pressed }) => (
         <Container pressed={pressed}>
-          {isChapterSelected && <SectionItemSelected />}
-          <SectionItemContainer>
-            <SectionItemNumber
+          {isChapterSelected && <ItemSelected />}
+          <ItemContainer>
+            <ItemNumber
               numberOfLines={2}
               isChapterSelected={isChapterSelected}
             >
               {pad(index.toString(), 3)}
-            </SectionItemNumber>
-            <SectionItemTitle
+            </ItemNumber>
+            <ItemTitle
               numberOfLines={1}
               isChapterSelected={isChapterSelected}
             >
               {title}
-            </SectionItemTitle>
-          </SectionItemContainer>
+            </ItemTitle>
+          </ItemContainer>
         </Container>
       )}
     </Pressable>

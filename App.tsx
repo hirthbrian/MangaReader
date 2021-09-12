@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useFonts } from 'expo-font';
 import { useKeepAwake } from 'expo-keep-awake';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Chapter from './src/screens/Chapter';
 import Loading from './src/components/Loading';
@@ -27,7 +28,7 @@ function App() {
   });
 
   useEffect(() => {
-    StatusBar.setBarStyle('light-content');
+    StatusBar.setBarStyle('dark-content');
     axios(URL).then(async response => {
       const value = await AsyncStorage.getItem('@chapter') || 1;
       setChapters(response.data);
@@ -42,11 +43,13 @@ function App() {
   }
 
   return (
-    <Chapter
-      initialIndex={initialIndex}
-      initialTitle={initialTitle}
-      chapters={chapters}
-    />
+    <SafeAreaProvider>
+      <Chapter
+        initialIndex={initialIndex}
+        initialTitle={initialTitle}
+        chapters={chapters}
+      />
+    </SafeAreaProvider>
   );
 }
 
