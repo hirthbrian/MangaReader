@@ -12,9 +12,7 @@ import styles, {
   SectionHeaderTitle,
   SectionHeaderContainer,
 } from './styles';
-
-const ITEM_HEIGHT = 66.5;
-const HEADER_HEIGHT = 71;
+import { HEADER_HEIGHT, ITEM_HEIGHT } from './consts';
 
 function ChapterList({
   chapters,
@@ -41,7 +39,9 @@ function ChapterList({
 
   const renderSectionHeader = ({ section: { title } }) => (
     <SectionHeaderContainer>
-      <SectionHeaderTitle>
+      <SectionHeaderTitle
+        numberOfLines={1}
+      >
         {title}
       </SectionHeaderTitle>
     </SectionHeaderContainer>

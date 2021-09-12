@@ -1,8 +1,7 @@
 import styled from 'styled-components/native';
 
 import Colors from '../../colors';
-
-const ITEM_HEIGHT = 66.5;
+import { ITEM_HEIGHT } from '../ChapterList/consts';
 
 export const Container = styled.View`
   background-color: ${props => props.pressed ? Colors.blue : Colors.darkBlue};
