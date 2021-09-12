@@ -51,8 +51,6 @@ function ChapterList({
     <Modal
       useNativeDriver
       isVisible={isVisible}
-      animationIn='slideInLeft'
-      animationOut='slideOutLeft'
       onBackdropPress={onClose}
       style={styles.modalContainer}
       hideModalContentWhileAnimating

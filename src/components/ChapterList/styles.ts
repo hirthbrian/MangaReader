@@ -6,14 +6,15 @@ import { HEADER_HEIGHT } from './consts';
 
 export const SafeAreaContainer = styled.SafeAreaView`
   flex: 1;
+  border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   background-color: ${Colors.darkBlue};
+  overflow: hidden;
 `;
 
 export const SectionHeaderContainer = styled.View`
-  height: ${HEADER_HEIGHT}px;
   padding: 10px;
+  height: ${HEADER_HEIGHT}px;
   background-color: ${Colors.darkBlue};
 `
 
@@ -27,6 +28,8 @@ export const SectionHeaderTitle = styled.Text`
 export default StyleSheet.create({
   modalContainer: {
     margin: 0,
-    marginRight: 50,
+    marginTop: 50,
+    marginHorizontal: 10,
+    maxWidth: 500,
   }
 });
