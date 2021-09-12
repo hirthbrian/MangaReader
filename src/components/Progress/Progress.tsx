@@ -1,22 +1,14 @@
 import React, { useRef, useEffect } from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
-import Colors from '../colors';
+import styles from './styles';
+import { ProgressProps } from './types';
 
-interface ProgressProps {
-  progress: number,
-};
-
-function Progress({
-  progress,
-}: ProgressProps) {
+function Progress({ progress }: ProgressProps) {
   const progressBarRef = useRef(null);
-  const { width } = Dimensions.get('window');
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     progressBarRef?.current?.transitionTo({ width: progress * width });
@@ -30,12 +22,5 @@ function Progress({
     />
   );
 }
-
-const styles = StyleSheet.create({
-  progressBar: {
-    height: 2,
-    backgroundColor: Colors.whiteHalf,
-  },
-});
 
 export default Progress;

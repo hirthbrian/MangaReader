@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useWindowDimensions } from 'react-native';
+import {
+  NativeScrollEvent,
+  useWindowDimensions,
+  NativeSyntheticEvent,
+} from 'react-native';
 
-import Modal from 'react-native-modal';
 import axios from 'axios';
-import Carousel from 'react-native-snap-carousel';
+import { FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Colors from '../../colors';
-import Chapters from '../Chapters';
+import ChapterList from '../../components/ChapterList';
 import Loading from '../../components/Loading';
 import Progress from '../../components/Progress';
 import Page from '../../components/Page';
@@ -16,7 +18,7 @@ import Footer from '../../components/Footer';
 const URL = 'https://us-central1-onepiece-31470.cloudfunctions.net/getPages';
 
 import { Props } from './types';
-import { styles, Container } from './styles';
+import { Container } from './styles';
 
 function Chapter({
   initialIndex,
@@ -42,25 +44,18 @@ function Chapter({
     AsyncStorage.setItem('@chapter', index.toString());
   }, [index]);
 
-  const renderModal = () => (
-    <Modal
+  const renderChapterList = () => (
+    <ChapterList
+      chapters={chapters}
       isVisible={showChapters}
-      onBackdropPress={() => setShowChapters(false)}
-      animationInTiming={500}
-      animationOutTiming={500}
-      style={styles.modalContainer}
-    >
-      <Chapters
-        chapters={chapters}
-        onCloseModal={() => setShowChapters(false)}
-        initialChapter={index}
-        onChapterChanged={(index: number, title: string) => {
-          setIndex(index);
-          setTitle(title);
-          setShowChapters(false)
-        }}
-      />
-    </Modal>
+      onClose={() => setShowChapters(false)}
+      initialChapter={index}
+      onChapterChanged={(index: number, title: string) => {
+        setIndex(index);
+        setTitle(title);
+        setShowChapters(false)
+      }}
+    />
   );
 
   const renderPage = ({ item: { uri } }) => (
@@ -70,24 +65,32 @@ function Chapter({
     />
   )
 
+  const onMomentum = ({
+    nativeEvent: {
+      contentSize,
+      contentOffset,
+      layoutMeasurement,
+    }
+  }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const percentage = (contentOffset.x + layoutMeasurement.width) / contentSize.width;
+    setShowFooter(percentage === 1);
+    setProgress(percentage);
+  }
+
   return (
     <Container>
-      {loading ?
-        <Loading /> :
-        <Carousel
-          items={images}
+      {loading
+        ? <Loading />
+        : <FlatList
+          horizontal
           data={images}
           renderItem={renderPage}
-          onSnapToItem={(index: number) => {
-            const percentage = (index + 1) / images.length;
-            if (index) setShowFooter(false);
-            if (percentage === 1) setShowFooter(true);
-            setProgress(percentage);
-          }}
-          inactiveSlideOpacity={1}
-          inactiveSlideScale={1}
-          itemWidth={width + 10}
-          sliderWidth={width}
+          snapToInterval={width}
+          decelerationRate="fast"
+          keyExtractor={item => item.uri}
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={onMomentum}
+          onMomentumScrollBegin={onMomentum}
         />
       }
       <Progress progress={progress} />
@@ -101,7 +104,7 @@ function Chapter({
           setTitle(chapters[index - 1].title);
         }}
       />
-      {renderModal()}
+      {renderChapterList()}
     </Container>
   );
 }

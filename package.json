@@ -21,7 +21,6 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-modal": "^13.0.0",
     "react-native-section-list-get-item-layout": "^2.2.3",
-    "react-native-snap-carousel": "^3.9.1",
     "react-native-web": "~0.13.12",
     "styled-components": "^5.3.1"
   },

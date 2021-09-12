@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Animated, useWindowDimensions } from 'react-native';
+import { Pressable, Animated, useWindowDimensions } from 'react-native';
 import {
   State,
   PanGestureHandler,
@@ -10,7 +10,7 @@ import {
 } from 'react-native-gesture-handler'
 
 import { Props } from './types';
-import { Pressable } from './styles';
+import { Container } from './styles';
 
 function Page({ uri, onPress }: Props) {
   const { width, height } = useWindowDimensions();
@@ -45,43 +45,48 @@ function Page({ uri, onPress }: Props) {
   };
 
   return (
-    <Pressable onPress={onPress}>
-      <PinchGestureHandler
-        ref={pinchRef}
-        simultaneousHandlers={panRef}
-        onGestureEvent={onPinchEvent}
-        onHandlerStateChange={onPinchStateChange}
-      >
-        <Animated.View>
-          <PanGestureHandler
-            ref={panRef}
-            simultaneousHandlers={pinchRef}
-            minPointers={2}
-            onGestureEvent={onPanGestureEvent}
-            onHandlerStateChange={onPanStateChange}
-          >
-            <Animated.Image
-              source={{ uri }}
-              resizeMode='contain'
-              style={{
-                height,
-                width,
-                transform: [
-                  {
-                    scale: scale.interpolate({
-                      inputRange: [0, 1, 3, 100],
-                      outputRange: [0.5, 1, 3, 10]
-                    })
-                  },
-                  { translateX: translate.x },
-                  { translateY: translate.y },
-                ]
-              }}
-            />
-          </PanGestureHandler>
-        </Animated.View>
-      </PinchGestureHandler>
-    </Pressable>
+    <Container
+      width={width}
+      height={height}
+    >
+      <Pressable onPress={onPress}>
+        <PinchGestureHandler
+          ref={pinchRef}
+          simultaneousHandlers={panRef}
+          onGestureEvent={onPinchEvent}
+          onHandlerStateChange={onPinchStateChange}
+        >
+          <Animated.View>
+            <PanGestureHandler
+              ref={panRef}
+              simultaneousHandlers={pinchRef}
+              minPointers={2}
+              onGestureEvent={onPanGestureEvent}
+              onHandlerStateChange={onPanStateChange}
+            >
+              <Animated.Image
+                source={{ uri }}
+                resizeMode='contain'
+                style={{
+                  width,
+                  height,
+                  transform: [
+                    {
+                      scale: scale.interpolate({
+                        inputRange: [0, 1, 3, 100],
+                        outputRange: [0.5, 1, 3, 10]
+                      })
+                    },
+                    { translateX: translate.x },
+                    { translateY: translate.y },
+                  ]
+                }}
+              />
+            </PanGestureHandler>
+          </Animated.View>
+        </PinchGestureHandler>
+      </Pressable>
+    </Container>
   );
 }
 
