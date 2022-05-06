@@ -29,7 +29,6 @@ export default StyleSheet.create({
   modalContainer: {
     margin: 0,
     marginTop: 50,
-    marginHorizontal: 10,
     maxWidth: 500,
   }
 });
