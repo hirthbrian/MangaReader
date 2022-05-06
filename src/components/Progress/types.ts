@@ -1,3 +1,3 @@
-export interface ProgressProps {
+export interface Props {
   progress: number,
 };

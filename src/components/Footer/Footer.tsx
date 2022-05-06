@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Pressable } from 'react-native';
+import React, { useEffect } from 'react';
+import { Pressable } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import {
   State,
@@ -9,7 +10,6 @@ import {
   FlingGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Animatable from 'react-native-animatable';
 
 import { pad } from '../../utils';
 import styles, {
@@ -31,27 +31,29 @@ function Footer({
   onChapterChanged,
 }: FooterProps) {
   const insets = useSafeAreaInsets();
-  const footerRef = useRef<Animatable.View & View>(null);
+  const scale = useSharedValue(1);
+  const translateY = useSharedValue(0);
 
   useEffect(() => {
-    isVisible ?
-      footerRef?.current?.transitionTo({ translateY: 0 }) :
-      footerRef?.current?.transitionTo({ translateY: 120 });
+    translateY.value = isVisible ? 0 : 120;
   }, [isVisible])
 
-  const pressInAnimation = () => {
-    footerRef?.current?.transitionTo({ scale: 1.03 });
-  }
+  const pressInAnimation = () => { scale.value = 1.03 }
 
-  const pressOutAnimation = () => {
-    footerRef?.current?.transitionTo({ scale: 1 });
-  }
+  const pressOutAnimation = () => { scale.value = 1 }
 
   const onFling = (event: HandlerStateChangeEvent<FlingGestureHandlerEventPayload>, direction: Directions) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       onChapterChanged(index + (direction === Directions.LEFT ? 1 : -1));
     }
   };
+
+  const aes = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: withSpring(translateY.value) },
+      { scale: withSpring(scale.value) },
+    ],
+  }));
 
   return (
     <Pressable
@@ -67,10 +69,8 @@ function Footer({
           direction={Directions.RIGHT}
           onHandlerStateChange={(e) => onFling(e, Directions.RIGHT)}
         >
-          <Animatable.View
-            useNativeDriver
-            ref={footerRef}
-            style={[styles.animatedContainer, {
+          <Animated.View
+            style={[aes, styles.animatedContainer, {
               bottom: insets.bottom + 10,
             }]}
           >
@@ -85,7 +85,7 @@ function Footer({
                 </ChapterTitle>
               </InfoContainer>
             </Container>
-          </Animatable.View>
+          </Animated.View>
         </FlingGestureHandler>
       </FlingGestureHandler>
     </Pressable>

@@ -1,10 +1,9 @@
-import { StyleSheet } from 'react-native';
+import styled from 'styled-components';
+import Animated from 'react-native-reanimated';
 
 import Colors from '../../colors';
 
-export default StyleSheet.create({
-  progressBar: {
-    height: 2,
-    backgroundColor: Colors.blue,
-  }
-});
+export const ProgressBar = styled(Animated.View)`
+  height: 2px;
+  background-color: ${Colors.blue};
+`;

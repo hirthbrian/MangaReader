@@ -1,26 +1,21 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useWindowDimensions } from 'react-native';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import * as Animatable from 'react-native-animatable';
+import { ProgressBar } from './styles';
+import { Props } from './types';
 
-import styles from './styles';
-import { ProgressProps } from './types';
-
-function Progress({ progress }: ProgressProps) {
-  const progressBarRef = useRef(null);
+function Progress({ progress }: Props) {
   const { width } = useWindowDimensions();
+  const offset = useSharedValue(0);
 
   useEffect(() => {
-    progressBarRef?.current?.transitionTo({ width: progress * width });
+    offset.value = withTiming(progress * width);
   }, [progress])
 
-  return (
-    <Animatable.View
-      ref={progressBarRef}
-      easing='linear'
-      style={styles.progressBar}
-    />
-  );
+  const aes = useAnimatedStyle(() => ({ width: offset.value }));
+
+  return <ProgressBar style={aes} />;
 }
 
 export default Progress;
