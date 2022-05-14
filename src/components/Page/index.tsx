@@ -1,15 +1,17 @@
-import React from 'react';
-import { useWindowDimensions } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import React from "react";
+import { useWindowDimensions } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 
-import { Props } from './types';
-import { Container } from './styles';
+import { Props } from "./types";
+import { Container } from "./styles";
 
-function Page({ uri, onPress }: Props) {
+const Page = ({ uri, onPress }: Props) => {
   const { width, height } = useWindowDimensions();
   const scale = useSharedValue(1);
-  const rotation = useSharedValue(0);
   const savedScale = useSharedValue(1);
   const start = useSharedValue({ x: 0, y: 0 });
   const offset = useSharedValue({ x: 0, y: 0 });
@@ -30,38 +32,40 @@ function Page({ uri, onPress }: Props) {
     });
 
   const zoomGesture = Gesture.Pinch()
+    .simultaneousWithExternalGesture(dragGesture)
     .onUpdate((event) => {
-      scale.value = savedScale.value * event.scale;
+      if (
+        savedScale.value * event.scale > 1 &&
+        savedScale.value * event.scale < 2
+      ) {
+        scale.value = savedScale.value * event.scale;
+      }
     })
     .onEnd(() => {
       savedScale.value = scale.value;
     });
-
-  const composed = Gesture.Simultaneous(dragGesture, zoomGesture);
 
   const aes = useAnimatedStyle(() => ({
     transform: [
       { translateX: offset.value.x },
       { translateY: offset.value.y },
       { scale: scale.value },
-      { rotateZ: `${rotation.value}rad` },
     ],
   }));
 
+  const composed = Gesture.Simultaneous(dragGesture, zoomGesture);
+
   return (
-    <Container onPress={onPress} width={width} height={height}>
-      <GestureDetector gesture={composed}>
+    <GestureDetector gesture={composed}>
+      <Container onPress={onPress} width={width} height={height}>
         <Animated.Image
           source={{ uri }}
-          resizeMode='contain'
-          style={[aes, {
-            width,
-            height,
-          }]}
+          resizeMode="contain"
+          style={[aes, { width, height }]}
         />
-      </GestureDetector>
-    </Container>
+      </Container>
+    </GestureDetector>
   );
-}
+};
 
 export default Page;
