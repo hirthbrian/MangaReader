@@ -5,61 +5,41 @@ import {
   useWindowDimensions,
   NativeSyntheticEvent,
 } from "react-native";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
 
-import ChapterList from "../../components/ChapterList";
 import Loading from "../../components/Loading";
 import Progress from "../../components/Progress";
 import Page from "../../components/Page";
 import Footer from "../../components/Footer";
 import { getImages } from "../../utils";
 
-const URL = "https://us-central1-onepiece-31470.cloudfunctions.net/getPages";
-
 import { Props } from "./types";
 import { Container } from "./styles";
 
-function Chapter({ initialIndex, initialTitle, chapters }: Props) {
+function Chapter() {
+  const {
+    params: { index, title },
+  } = useRoute();
   const { width } = useWindowDimensions();
-  const [index, setIndex] = useState(initialIndex);
-  const [title, setTitle] = useState(initialTitle);
   const [images, setImages] = useState([]);
-  const [showChapters, setShowChapters] = useState(false);
+  const [showChapters, setShowChapters] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     setLoading(true);
-    // axios(`${URL}?index=${index}`).then((response) => {
-    //   setImages(response.data);
-    //   setLoading(false);
-    // });
-    getImages(index).then((image) => {
-      // console.log(image);
-      setImages(image);
+    getImages(index).then((images) => {
+      setImages(images);
+      setLoading(false);
       // const value = (await AsyncStorage.getItem("@chapter")) || 1;
     });
-    AsyncStorage.setItem("@chapter", index.toString());
-  }, [index]);
+    // AsyncStorage.setItem("@chapter", index.toString());
+  }, []);
 
-  const renderChapterList = () => (
-    <ChapterList
-      chapters={chapters}
-      isVisible={showChapters}
-      onClose={() => setShowChapters(false)}
-      initialChapter={index}
-      onChapterChanged={(index: number, title: string) => {
-        setIndex(index);
-        setTitle(title);
-        setShowChapters(false);
-      }}
-    />
-  );
-
-  const renderPage = ({ item: { uri } }) => (
-    <Page uri={uri} onPress={() => setShowFooter(!showFooter)} />
+  const renderPage = ({ item }) => (
+    <Page uri={item} onPress={() => setShowFooter(!showFooter)} />
   );
 
   const renderFooter = () => (
@@ -84,26 +64,23 @@ function Chapter({ initialIndex, initialTitle, chapters }: Props) {
     setProgress(percentage);
   };
 
+  if (loading) return <Loading />;
+
   return (
     <Container>
-      {loading ? (
-        <Loading />
-      ) : (
-        <FlatList
-          horizontal
-          data={images}
-          renderItem={renderPage}
-          snapToInterval={width}
-          decelerationRate="fast"
-          keyExtractor={(item) => item.uri}
-          showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={onMomentum}
-          onMomentumScrollBegin={onMomentum}
-        />
-      )}
+      <FlatList
+        horizontal
+        data={images}
+        renderItem={renderPage}
+        snapToInterval={width}
+        decelerationRate="fast"
+        keyExtractor={(item) => item}
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={onMomentum}
+        onMomentumScrollBegin={onMomentum}
+      />
       <Progress progress={progress} />
       {renderFooter()}
-      {renderChapterList()}
     </Container>
   );
 }

@@ -56,15 +56,15 @@ const Page = ({ uri, onPress }: Props) => {
   const composed = Gesture.Simultaneous(dragGesture, zoomGesture);
 
   return (
-    <GestureDetector gesture={composed}>
+    // <GestureDetector gesture={composed}>
       <Container onPress={onPress} width={width} height={height}>
         <Animated.Image
-          source={{ uri }}
+          source={{ uri: uri.replace(/\s/g, "") }}
           resizeMode="contain"
           style={[aes, { width, height }]}
         />
       </Container>
-    </GestureDetector>
+    // </GestureDetector>
   );
 };
 
