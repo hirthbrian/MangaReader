@@ -13,6 +13,7 @@ import Loading from "../../components/Loading";
 import Progress from "../../components/Progress";
 import Page from "../../components/Page";
 import Footer from "../../components/Footer";
+import { getImages } from "../../utils";
 
 const URL = "https://us-central1-onepiece-31470.cloudfunctions.net/getPages";
 
@@ -31,9 +32,14 @@ function Chapter({ initialIndex, initialTitle, chapters }: Props) {
 
   useEffect(() => {
     setLoading(true);
-    axios(`${URL}?index=${index}`).then((response) => {
-      setImages(response.data);
-      setLoading(false);
+    // axios(`${URL}?index=${index}`).then((response) => {
+    //   setImages(response.data);
+    //   setLoading(false);
+    // });
+    getImages(index).then((image) => {
+      // console.log(image);
+      setImages(image);
+      // const value = (await AsyncStorage.getItem("@chapter")) || 1;
     });
     AsyncStorage.setItem("@chapter", index.toString());
   }, [index]);
