@@ -6,8 +6,19 @@ import {
 	withTiming,
 } from 'react-native-reanimated';
 
-import { ProgressBar } from './styles';
-import { Props } from './types';
+import styled from 'styled-components';
+import Animated from 'react-native-reanimated';
+
+import Colors from '../colors';
+
+export const ProgressBar = styled(Animated.View)`
+	height: 2px;
+	background-color: ${Colors.blue};
+`;
+
+export interface Props {
+	progress: number;
+}
 
 function Progress({ progress }: Props) {
 	const { width } = useWindowDimensions();

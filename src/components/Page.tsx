@@ -1,13 +1,29 @@
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions, Pressable } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
 } from 'react-native-reanimated';
 
-import { Props } from './types';
-import { Container } from './styles';
+import styled from 'styled-components/native';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+export const Container = styled(AnimatedPressable)`
+	width: ${(props: ContainerProps) => props.width}px;
+	height: ${(props: ContainerProps) => props.height}px;
+`;
+
+export interface Props {
+	uri: string;
+	onPress: () => void;
+}
+
+export interface ContainerProps {
+	width: number;
+	height: number;
+}
 
 const Page = ({ uri, onPress }: Props) => {
 	const { width, height } = useWindowDimensions();

@@ -1,13 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
+import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
-import { sectionBySaga } from '../../utils';
-import ChapterRowItem from '../../components/ChapterRowItem';
-import { getChapters } from '../../utils';
-import Loading from '../../components/Loading';
+import { sectionBySaga } from '../utils';
+import ChapterRowItem from '../components/ChapterRowItem';
+import { getChapters } from '../utils';
+import Loading from '../components/Loading';
+import Colors from '../colors';
 
-import { SafeAreaContainer, SectionHeaderTitle } from './styles';
+export const ITEM_HEIGHT = 66.5;
+export const HEADER_HEIGHT = 71;
+
+export const SafeAreaContainer = styled.SafeAreaView`
+	flex: 1;
+	background-color: ${Colors.white};
+`;
+
+export const SectionHeaderTitle = styled.Text`
+	font-size: 42px;
+	font-family: InterBold;
+	padding: 10px;
+	color: ${Colors.lightBlue};
+`;
 
 function ChaptersList() {
 	const navigation = useNavigation();

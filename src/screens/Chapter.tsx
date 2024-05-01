@@ -8,14 +8,34 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 
-import Loading from '../../components/Loading';
-import Progress from '../../components/Progress';
-import Page from '../../components/Page';
-import Footer from '../../components/Footer';
-import { getImages } from '../../utils';
+import Loading from '../components/Loading';
+import Progress from '../components/Progress';
+import Page from '../components/Page';
+import Footer from '../components/Footer';
+import { getImages } from '../utils';
 
 import { Props } from './types';
-import { Container } from './styles';
+
+import styled from 'styled-components/native';
+
+import Colors from '../colors';
+
+export const Container = styled.View`
+	flex: 1;
+	background-color: ${Colors.white};
+`;
+
+export interface Chapter {
+	index: number;
+	title: string;
+	url: string;
+}
+
+export interface Props {
+	initialIndex: number;
+	initialTitle: string;
+	chapters: Chapter[];
+}
 
 function Chapter() {
 	const {

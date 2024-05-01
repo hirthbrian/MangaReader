@@ -1,7 +1,19 @@
+import React from 'react';
+import { Pressable } from 'react-native';
+
+import { pad } from '../utils';
+
 import styled from 'styled-components/native';
 
-import Colors from '../../colors';
-import { ITEM_HEIGHT } from '../../screens/ChaptersList/consts';
+import Colors from '../colors';
+import { ITEM_HEIGHT } from '../screens/ChaptersList';
+
+export interface Props {
+	title: string;
+	index: number;
+	onPress: Function;
+	isChapterSelected: boolean;
+}
 
 export const Container = styled.View`
 	flex-direction: row;
@@ -52,3 +64,25 @@ export const ImageContainer = styled.Image`
 	position: absolute;
 	tint-color: ${Colors.white};
 `;
+
+function ChapterRowItem({ title, index, onPress, isChapterSelected }: Props) {
+	return (
+		<Pressable onPress={() => onPress(index, title)}>
+			{({ pressed }) => (
+				<Container pressed={pressed}>
+					{isChapterSelected && <ItemSelected />}
+					<ItemContainer>
+						<ItemNumber numberOfLines={2} isChapterSelected={isChapterSelected}>
+							{pad(index.toString(), 3)}
+						</ItemNumber>
+						<ItemTitle numberOfLines={1} isChapterSelected={isChapterSelected}>
+							{title}
+						</ItemTitle>
+					</ItemContainer>
+				</Container>
+			)}
+		</Pressable>
+	);
+}
+
+export default ChapterRowItem;
