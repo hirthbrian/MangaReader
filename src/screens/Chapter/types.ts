@@ -1,11 +1,11 @@
 export interface Chapter {
-  index: number,
-  title: string,
-  url: string,
-};
+	index: number;
+	title: string;
+	url: string;
+}
 
 export interface Props {
-  initialIndex: number,
-  initialTitle: string,
-  chapters: Chapter[],
-};
+	initialIndex: number;
+	initialTitle: string;
+	chapters: Chapter[];
+}

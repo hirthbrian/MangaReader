@@ -1,3 +1,3 @@
 export interface Props {
-  progress: number,
-};
+	progress: number;
+}

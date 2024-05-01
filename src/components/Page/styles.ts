@@ -7,6 +7,6 @@ import { ContainerProps } from './types';
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const Container = styled(AnimatedPressable)`
-  width: ${(props: ContainerProps) => props.width}px;
-  height: ${(props: ContainerProps) => props.height}px;
+	width: ${(props: ContainerProps) => props.width}px;
+	height: ${(props: ContainerProps) => props.height}px;
 `;
