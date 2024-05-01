@@ -12,7 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import ChapterList from './src/pages/ChaptersList';
 import Chapter from './src/pages/Chapter';
-import Loading from './src/components/Loading';
+import Loading from './src/atoms/Loading';
 import { getChapters, getImages } from './src/utils';
 
 function App() {
@@ -35,8 +35,12 @@ function App() {
 		<GestureHandlerRootView>
 			<NavigationContainer>
 				<Stack.Navigator screenOptions={{ headerShown: false }}>
-					<Stack.Screen name="ChapterList" component={ChapterList} />
 					<Stack.Screen name="Chapter" component={Chapter} />
+					<Stack.Screen
+						options={{ presentation: 'modal' }}
+						name="ChapterList"
+						component={ChapterList}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</GestureHandlerRootView>

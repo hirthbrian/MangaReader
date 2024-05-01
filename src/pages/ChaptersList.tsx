@@ -1,33 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
-import styled from 'styled-components/native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { sectionBySaga } from '../utils';
-import ChapterRowItem from '../components/ChapterRowItem';
+import ChapterRowItem from '../molecules/ChapterRowItem';
 import { getChapters } from '../utils';
-import Loading from '../components/Loading';
+import Loading from '../atoms/Loading';
 import Colors from '../colors';
+import useChapterStore from '../store/chapterStore';
 
-export const ITEM_HEIGHT = 66.5;
-export const HEADER_HEIGHT = 71;
-
-export const SafeAreaContainer = styled.SafeAreaView`
-	flex: 1;
-	background-color: ${Colors.white};
-`;
-
-export const SectionHeaderTitle = styled.Text`
-	font-size: 42px;
-	font-family: InterBold;
-	padding: 10px;
-	color: ${Colors.lightBlue};
-`;
+const HEADER_HEIGHT = 71;
 
 function ChaptersList() {
 	const navigation = useNavigation();
 	const [chapters, setChapters] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+
+	const setChapterIndex = useChapterStore((state) => state.setIndex);
+	const setChapterTitle = useChapterStore((state) => state.setTitle);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -38,7 +28,8 @@ function ChaptersList() {
 	}, []);
 
 	const selectChapter = (index: string, title: string) => {
-		navigation.navigate('Chapter', { index, title });
+		setChapterIndex(index);
+		setChapterTitle(title);
 	};
 
 	const renderItem = ({ item }) => (
@@ -51,20 +42,31 @@ function ChaptersList() {
 	);
 
 	const renderSectionHeader = ({ section: { title } }) => (
-		<SectionHeaderTitle numberOfLines={1}>{title}</SectionHeaderTitle>
+		<Text style={styles.sectionHeaderTitle} numberOfLines={1}>
+			{title}
+		</Text>
 	);
 
-	if (isLoading) return <Loading />;
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	return (
-		<SafeAreaContainer>
-			<FlatList
-				data={chapters.reverse()}
-				renderItem={renderItem}
-				keyExtractor={({ index }) => index}
-			/>
-		</SafeAreaContainer>
+		<FlatList
+			data={chapters.reverse()}
+			renderItem={renderItem}
+			keyExtractor={({ index }) => index}
+		/>
 	);
 }
+
+const styles = StyleSheet.create({
+	sectionHeaderTitle: {
+		fontSize: 42,
+		fontFamily: 'Inter-Bold',
+		padding: 10,
+		color: Colors.lightBlue,
+	},
+});
 
 export default ChaptersList;

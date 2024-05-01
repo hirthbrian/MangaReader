@@ -1,19 +1,12 @@
 import React from 'react';
-import { useWindowDimensions, Pressable } from 'react-native';
+import { useWindowDimensions, Pressable, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
 } from 'react-native-reanimated';
 
-import styled from 'styled-components/native';
-
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
-export const Container = styled(AnimatedPressable)`
-	width: ${(props: ContainerProps) => props.width}px;
-	height: ${(props: ContainerProps) => props.height}px;
-`;
 
 export interface Props {
 	uri: string;
@@ -73,15 +66,31 @@ const Page = ({ uri, onPress }: Props) => {
 
 	return (
 		// <GestureDetector gesture={composed}>
-		<Container onPress={onPress} width={width} height={height}>
+		<AnimatedPressable
+			style={styles({ width, height }).container}
+			onPress={onPress}
+		>
 			<Animated.Image
 				source={{ uri: uri.replace(/\s/g, '') }}
 				resizeMode="contain"
 				style={[aes, { width, height }]}
 			/>
-		</Container>
+		</AnimatedPressable>
 		// </GestureDetector>
 	);
 };
+
+type StyleSheetProps = {
+	width?: number;
+	height?: number;
+};
+
+const styles = ({ width, height }: StyleSheetProps) =>
+	StyleSheet.create({
+		container: {
+			height,
+			width,
+		},
+	});
 
 export default Page;

@@ -4,24 +4,19 @@ import {
 	NativeScrollEvent,
 	useWindowDimensions,
 	NativeSyntheticEvent,
+	StyleSheet,
+	View,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
 
-import Loading from '../components/Loading';
+import useChapterStore from '../store/chapterStore';
+
+import Loading from '../atoms/Loading';
 import Progress from '../components/Progress';
 import Page from '../components/Page';
-import Footer from '../components/Footer';
+import Footer from '../organisms/Footer';
 import { getImages } from '../utils';
 
-import styled from 'styled-components/native';
-
 import Colors from '../colors';
-
-export const Container = styled.View`
-	flex: 1;
-	background-color: ${Colors.white};
-`;
 
 export interface Chapter {
 	index: number;
@@ -36,9 +31,6 @@ export interface Props {
 }
 
 function Chapter() {
-	const {
-		params: { index, title },
-	} = useRoute();
 	const { width } = useWindowDimensions();
 	const [images, setImages] = useState([]);
 	const [showChapters, setShowChapters] = useState(true);
@@ -46,15 +38,18 @@ function Chapter() {
 	const [loading, setLoading] = useState(true);
 	const [progress, setProgress] = useState(0);
 
+	const chapterIndex = useChapterStore((state) => state.index);
+	const chapterTitle = useChapterStore((state) => state.title);
+
 	useEffect(() => {
 		setLoading(true);
-		getImages(index).then((images) => {
+		getImages(chapterIndex).then((images) => {
 			setImages(images);
 			setLoading(false);
 			// const value = (await AsyncStorage.getItem("@chapter")) || 1;
 		});
 		// AsyncStorage.setItem("@chapter", index.toString());
-	}, []);
+	}, [chapterIndex]);
 
 	const renderPage = ({ item }) => (
 		<Page uri={item} onPress={() => setShowFooter(!showFooter)} />
@@ -62,8 +57,8 @@ function Chapter() {
 
 	const renderFooter = () => (
 		<Footer
-			index={index}
-			title={title}
+			index={chapterIndex}
+			title={chapterTitle}
 			isVisible={showFooter}
 			showChapters={setShowChapters}
 			onChapterChanged={(index: number) => {
@@ -82,10 +77,12 @@ function Chapter() {
 		setProgress(percentage);
 	};
 
-	if (loading) return <Loading />;
+	if (loading) {
+		return <Loading />;
+	}
 
 	return (
-		<Container>
+		<View style={styles.container}>
 			<FlatList
 				horizontal
 				data={images}
@@ -99,8 +96,15 @@ function Chapter() {
 			/>
 			<Progress progress={progress} />
 			{renderFooter()}
-		</Container>
+		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Colors.white,
+	},
+});
 
 export default Chapter;
