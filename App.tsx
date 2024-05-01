@@ -10,8 +10,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import ChapterList from './src/screens/ChaptersList';
-import Chapter from './src/screens/Chapter';
+import ChapterList from './src/pages/ChaptersList';
+import Chapter from './src/pages/Chapter';
 import Loading from './src/components/Loading';
 import { getChapters, getImages } from './src/utils';
 

@@ -6,7 +6,7 @@ import { pad } from '../utils';
 import styled from 'styled-components/native';
 
 import Colors from '../colors';
-import { ITEM_HEIGHT } from '../screens/ChaptersList';
+import { ITEM_HEIGHT } from '../pages/ChaptersList';
 
 export interface Props {
 	title: string;

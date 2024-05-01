@@ -14,8 +14,6 @@ import Page from '../components/Page';
 import Footer from '../components/Footer';
 import { getImages } from '../utils';
 
-import { Props } from './types';
-
 import styled from 'styled-components/native';
 
 import Colors from '../colors';
