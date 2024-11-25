@@ -2,40 +2,40 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/fonts/Inter-Black.otf",
-      "sha1": "6fd3a6032aa9e198233088249fe1a7adf69715cf"
+      "path": "assets/fonts/Poppins-Black.ttf",
+      "sha1": "645e04c53c6b5b35bce654a811ebce16af8aa721"
     },
     {
-      "path": "assets/fonts/Inter-Bold.otf",
-      "sha1": "9a8f4c33e0d0c1d40803471cd22d1f3567a5012b"
+      "path": "assets/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
     },
     {
-      "path": "assets/fonts/Inter-ExtraBold.otf",
-      "sha1": "2685fe29f2317dc5e09dfad99d5831d77ad6e101"
+      "path": "assets/fonts/Poppins-ExtraBold.ttf",
+      "sha1": "4b5c0750f073abd576413a0898d3b95adaf199c8"
     },
     {
-      "path": "assets/fonts/Inter-ExtraLight.otf",
-      "sha1": "64f4be53b1d5295cada774f244f0f2dbef1acb9b"
+      "path": "assets/fonts/Poppins-ExtraLight.ttf",
+      "sha1": "85af6582a7e6155917c605f9d3fed68c02b23b06"
     },
     {
-      "path": "assets/fonts/Inter-Light.otf",
-      "sha1": "083faafdb31a25d1c0f468e35b76ed650fba0179"
+      "path": "assets/fonts/Poppins-Light.ttf",
+      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
     },
     {
-      "path": "assets/fonts/Inter-Medium.otf",
-      "sha1": "32ab2a6e5572684b51b9daadda26598481a2a01f"
+      "path": "assets/fonts/Poppins-Medium.ttf",
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
     },
     {
-      "path": "assets/fonts/Inter-Regular.otf",
-      "sha1": "09656d6e99ab197db567c423125f533aaf3772a3"
+      "path": "assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
     },
     {
-      "path": "assets/fonts/Inter-SemiBold.otf",
-      "sha1": "b14075626fc7408febaceeb4dd561a850fd46268"
+      "path": "assets/fonts/Poppins-SemiBold.ttf",
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
     },
     {
-      "path": "assets/fonts/Inter-Thin.otf",
-      "sha1": "af376e6262bfa8a84f9de2fe37cf69d47925c9f5"
+      "path": "assets/fonts/Poppins-Thin.ttf",
+      "sha1": "09ba4dcd5509c8085bf88c665dcc51cbdfced27b"
     }
   ]
 }
