@@ -1,4 +1,16 @@
 module.exports = {
 	presets: ['module:@react-native/babel-preset'],
-	plugins: ['react-native-reanimated/plugin'],
+	plugins: [
+		[
+			'module-resolver',
+			{
+				alias: {
+					'~domain': './src/domain',
+					'~infrastructure': './src/infrastructure',
+					'~ui': './src/ui',
+				},
+			},
+		],
+		'react-native-reanimated/plugin',
+	],
 };
