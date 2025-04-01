@@ -46,10 +46,10 @@ export const NavigationLightTheme: ReactNavigation.Theme = {
 	...DefaultTheme,
 	colors: {
 		...DefaultTheme.colors,
-		primary: colorPalettes.light.background,
+		primary: colorPalettes.light.primary,
 		background: colorPalettes.light.background,
-		card: colorPalettes.light.primary,
-		text: colorPalettes.light.background,
+		card: colorPalettes.light.background,
+		text: colorPalettes.light.neutral,
 	},
 };
 
@@ -57,7 +57,7 @@ export const NavigationDarkTheme: ReactNavigation.Theme = {
 	...DarkTheme,
 	colors: {
 		...DarkTheme.colors,
-		primary: colorPalettes.light.background,
+		primary: colorPalettes.dark.primary,
 		background: colorPalettes.dark.background,
 		card: colorPalettes.dark.backgroundLight,
 		text: colorPalettes.dark.neutral,

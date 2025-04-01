@@ -1,8 +1,9 @@
 import { StaticScreenProps } from '@react-navigation/native';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 
+import { IChapter } from '~domain/entities';
 import { TreeIndicatorType } from '~domain/types';
 import { getChapters } from '~infrastructure/fetch';
 import { useTheme } from '~infrastructure/hooks/useTheme';
@@ -25,9 +26,11 @@ function ChaptersScreen({ route }: Props) {
 	const { colors } = useTheme();
 	const { id } = route.params;
 
-	const query = useQuery({
+	const query = useInfiniteQuery({
 		queryKey: ['getChapters', id],
-		queryFn: () => getChapters(id, 15),
+		queryFn: ({ pageParam }) => getChapters(id, pageParam),
+		initialPageParam: 0,
+		getNextPageParam: (lastPage) => lastPage.offset,
 	});
 
 	const sections = useMemo(() => {
@@ -35,13 +38,17 @@ function ChaptersScreen({ route }: Props) {
 			return [];
 		}
 
-		const grouped = query.data.reduce<Record<string, typeof query.data>>(
-			(acc, chapter) => {
-				const chapterNumber = chapter.chapter;
+		const concatPages = query.data.pages.reduce(
+			(acc, page) => acc.concat(page.data),
+			[] as Array<IChapter>,
+		);
+		const grouped = concatPages?.reduce<Record<string, Array<IChapter>>>(
+			(acc, data) => {
+				const chapterNumber = data.chapter;
 
 				// Create array for this chapter number if it doesn't exist
 				acc[chapterNumber] = acc[chapterNumber] || [];
-				acc[chapterNumber].push(chapter);
+				acc[chapterNumber].push(data);
 
 				return acc;
 			},
@@ -65,18 +72,27 @@ function ChaptersScreen({ route }: Props) {
 		/>
 	);
 
+	const onEndReached = () => {
+		if (!query.isFetchingNextPage) {
+			query.fetchNextPage();
+		}
+	};
+
 	return (
 		<SectionList
 			sections={sections}
 			SectionSeparatorComponent={renderSectionSeparator}
 			ItemSeparatorComponent={renderItemSeparator}
 			contentContainerStyle={styles.container}
+			onEndReached={onEndReached}
 			renderItem={({ item, index, section }) => {
 				let type: TreeIndicatorType = 'middle';
-				if (index === 0) {
+
+				if (section.data.length === 1) {
+					type = undefined;
+				} else if (index === 0) {
 					type = 'start';
-				}
-				if (index === section.data.length - 1) {
+				} else if (index === section.data.length - 1) {
 					type = 'end';
 				}
 

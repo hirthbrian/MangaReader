@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { getChapters } from '~infrastructure/fetch';
 import Loading from '~ui/atoms/Loading';
 import { TextHeading } from '~ui/atoms/Texts';
-import ChapterListItem from '~ui/molecules/ChapterListItem';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +16,7 @@ type Props = {
 };
 
 function ChapterList({ id }: Props) {
-	const { data, isLoading } = useQuery({
+	const { isLoading } = useQuery({
 		queryKey: ['chapters', id],
 		queryFn: () => getChapters(id),
 	});
@@ -29,9 +28,9 @@ function ChapterList({ id }: Props) {
 	return (
 		<View style={styles.container}>
 			<TextHeading>Chapters</TextHeading>
-			{data?.map((item) => (
+			{/* {data?.data?.map((item) => (
 				<ChapterListItem key={item.id} data={item} />
-			))}
+			))} */}
 		</View>
 	);
 }

@@ -65,7 +65,7 @@ function MangaListFullCard({ data, onPress, width = 70 }: Props) {
 						<TextHeading numberOfLines={2}>{data.title}</TextHeading>
 						<View style={styles.tagsContainer}>
 							<StatusTag status={data.status} />
-							<Tag label={data.year.toString()} />
+							{data.year && <Tag label={data.year.toString()} />}
 						</View>
 					</View>
 				</View>

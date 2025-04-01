@@ -92,9 +92,15 @@ function MangaScreen({ route }: Props) {
 	const renderTitle = () => {
 		return (
 			<View>
-				{data?.title && <TextTitle numberOfLines={2}>{data?.title}</TextTitle>}
+				{data?.title && (
+					<TextTitle textAlign="center" numberOfLines={2}>
+						{data?.title}
+					</TextTitle>
+				)}
 				{data?.originalTitle && (
-					<TextHeading numberOfLines={1}>{data?.originalTitle}</TextHeading>
+					<TextHeading textAlign="center" numberOfLines={1}>
+						{data?.originalTitle}
+					</TextHeading>
 				)}
 			</View>
 		);

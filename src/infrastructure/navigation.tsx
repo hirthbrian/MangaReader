@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
 	createStaticNavigation,
 	type StaticParamList,
@@ -8,41 +9,93 @@ import {
 	createNativeStackNavigator,
 	type NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
+import { Pressable } from 'react-native';
 
-import { textStyles } from '~ui/atoms/Texts';
+import {
+	IconHouse,
+	IconLibrary,
+	IconSearch,
+	IconSettings,
+	IconUser,
+} from '~ui/atoms/Icons';
+import { TextBody, textStyles } from '~ui/atoms/Texts';
+import AccountScreen from '~ui/screens/AccountScreen';
 import ChaptersScreen from '~ui/screens/ChaptersScreen';
+import ExternalReaderScreen from '~ui/screens/ExternalReaderScreen';
 import HomeScreen from '~ui/screens/HomeScreen';
+import LibraryScreen from '~ui/screens/LibraryScreen';
 import MangaScreen from '~ui/screens/MangaScreen';
 import ReaderScreen from '~ui/screens/ReaderScreen';
 import SearchScreen from '~ui/screens/SearchScreen';
 
+import { useTheme } from './hooks/useTheme';
+
 export const screenOptions = (): NativeStackNavigationOptions => ({
 	headerBackButtonDisplayMode: 'minimal',
 	headerTitleStyle: textStyles.heading,
-	// headerRight: ProfileButton,
 });
 
-const MainStack = createNativeStackNavigator({
+const HomeTabs = createBottomTabNavigator({
 	screens: {
-		HomeScreen: {
+		Home: {
 			screen: HomeScreen,
 			options: {
+				tabBarIcon: IconHouse,
+			},
+		},
+		Search: {
+			screen: SearchScreen,
+			options: {
+				tabBarIcon: IconSearch,
+			},
+		},
+		Library: {
+			screen: LibraryScreen,
+			options: {
+				tabBarIcon: IconLibrary,
+			},
+		},
+		Account: {
+			screen: AccountScreen,
+			options: {
+				tabBarIcon: IconUser,
+			},
+		},
+	},
+	screenOptions: {
+		headerShown: false,
+		tabBarLabel: TextBody,
+	},
+});
+
+const SettingsHeaderIcon = () => {
+	const { colors } = useTheme();
+
+	return (
+		<Pressable onPress={() => null}>
+			<IconSettings size={22} color={colors.neutralLight} />
+		</Pressable>
+	);
+};
+
+const RootStack = createNativeStackNavigator({
+	screens: {
+		HomeScreen: {
+			screen: HomeTabs,
+			options: {
 				title: 'Manga Reader',
+				headerRight: SettingsHeaderIcon,
 			},
 		},
 		SearchScreen: {
 			screen: SearchScreen,
 			options: {
 				title: 'Search',
-				animation: 'none',
+				presentation: 'modal',
 			},
 		},
 		MangaScreen: {
 			screen: MangaScreen,
-			options: {
-				title: 'A Messy Fairy Tale',
-				// headerTransparent: true,
-			},
 		},
 		ChaptersScreen: {
 			screen: ChaptersScreen,
@@ -50,6 +103,7 @@ const MainStack = createNativeStackNavigator({
 				title: 'Chapters',
 			},
 		},
+
 		ReaderScreen: {
 			screen: ReaderScreen,
 			options: {
@@ -60,13 +114,19 @@ const MainStack = createNativeStackNavigator({
 				},
 			},
 		},
+		ExternalReaderScreen: {
+			screen: ExternalReaderScreen,
+			options: {
+				title: '',
+			},
+		},
 	},
 	screenOptions,
 });
 
-export const MainNavigation = createStaticNavigation(MainStack);
+export const MainNavigation = createStaticNavigation(RootStack);
 
-type RootStackParamList = StaticParamList<typeof MainStack>;
+type RootStackParamList = StaticParamList<typeof RootStack>;
 
 declare global {
 	namespace ReactNavigation {

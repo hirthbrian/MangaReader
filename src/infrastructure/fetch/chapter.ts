@@ -6,27 +6,29 @@ import type {
 	IMangaDexResponse,
 	IMangeDexChapter,
 	IMangeDexChapterImages,
+	IPaginated,
 } from '~domain/entities';
 import { BASE_URL } from '~infrastructure/fetch';
 
 export const getChapters = async (
 	id: string,
-	limit = 3,
-): Promise<Array<IChapter>> => {
+	offset: number = 0,
+): Promise<IPaginated<Array<IChapter>>> => {
 	return axios
 		.get<IMangaDexResponse<Array<IMangeDexChapter>>>(
 			`${BASE_URL}/manga/${id}/feed`,
 			{
 				params: {
-					limit,
+					offset,
+					limit: 50,
 					// translatedLanguage: ['en'],
 					'order[chapter]': 'desc',
 					'includes[]': 'scanlation_group',
 				},
 			},
 		)
-		.then(({ data: { data } }) =>
-			data.map((d) => {
+		.then(({ data }) => {
+			const chapters = data.data.map((d) => {
 				let chapter: IChapter = {
 					id: d.id,
 					date: dayjs(d.attributes.updatedAt).fromNow(),
@@ -51,8 +53,13 @@ export const getChapters = async (
 				}
 
 				return chapter;
-			}),
-		);
+			});
+			return {
+				data: chapters,
+				offset: (data.offset || 0) + chapters.length,
+				total: data.total,
+			};
+		});
 };
 
 export const getImages = async (id: string): Promise<Array<string>> => {

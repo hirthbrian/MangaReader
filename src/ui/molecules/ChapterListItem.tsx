@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useMemo, useState } from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 import Animated, {
 	useAnimatedStyle,
@@ -79,7 +79,7 @@ function ChapterListItem({ data, type }: Props) {
 
 	const onPress = () => {
 		if (data.externalUrl) {
-			Linking.openURL(data.externalUrl);
+			navigation.navigate('ExternalReaderScreen', { url: data.externalUrl });
 		} else {
 			navigation.navigate('ReaderScreen', { data });
 		}

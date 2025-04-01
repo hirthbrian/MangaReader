@@ -22,6 +22,10 @@ export const IconSettings = (props: Props) => (
 
 export const IconPalette = (props: Props) => <Icon name="palette" {...props} />;
 
+export const IconLibrary = (props: Props) => <Icon name="library" {...props} />;
+
+export const IconHouse = (props: Props) => <Icon name="house" {...props} />;
+
 export const IconExternal = (props: Props) => (
 	<Icon name="square-arrow-out-up-right" {...props} />
 );

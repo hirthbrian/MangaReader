@@ -7,6 +7,12 @@ export interface IMangaDexResponse<T> {
 	total?: number;
 }
 
+export interface IPaginated<T> {
+	data: T;
+	offset?: number;
+	total?: number;
+}
+
 export * from './chapter';
 export * from './list';
 export * from './manga';

@@ -52,18 +52,13 @@ export interface IMangaShort {
 	id: string;
 	title: string;
 	cover: string;
-	year: number;
+	year?: number;
 	status: MangaStatusType;
 }
 
-export interface IManga {
-	id: string;
+export interface IManga extends IMangaShort {
 	author?: string;
-	cover: string;
 	description: string;
-	status: MangaStatusType;
-	year: number;
 	genres: Array<string>;
 	originalTitle: string;
-	title: string;
 }
